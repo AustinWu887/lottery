@@ -172,17 +172,14 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
                             <AnimatePresence>
                                 {(phase === 'pulling' || phase === 'revealed') && displayNumber && (
                                     <motion.div
-                                        initial={{ scale: 0, opacity: 0, y: 50 }}
+                                        initial={{ scale: 0, opacity: 0, y: 150 }}
                                         animate={{
                                             scale: phase === 'revealed' ? 1.5 : 1,
                                             opacity: 1,
-                                            y: phase === 'revealed' ? 80 : 35
+                                            y: phase === 'revealed' ? 180 : 160
                                         }}
                                         transition={{
-                                            type: "spring",
-                                            stiffness: 200,
-                                            damping: 15,
-                                            delay: phase === 'revealed' ? 0.2 : 0
+                                            type: "spring", stiffness: 200, damping: 15, delay: phase === 'revealed' ? 0.2 : 0
                                         }}
                                         className="absolute z-40 w-[80px] h-[80px] bg-gradient-to-br from-yellow-300 to-amber-500 rounded-full shadow-2xl border-4 border-yellow-200 flex items-center justify-center transform-gpu"
                                     >

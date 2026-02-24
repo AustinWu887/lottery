@@ -42752,11 +42752,11 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
           /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(AnimatePresence, { children: (phase === "pulling" || phase === "revealed") && displayNumber && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
             motion.div,
             {
-              initial: { scale: 0, opacity: 0, y: 50 },
+              initial: { scale: 0, opacity: 0, y: 150 },
               animate: {
                 scale: phase === "revealed" ? 1.5 : 1,
                 opacity: 1,
-                y: phase === "revealed" ? 80 : 35
+                y: phase === "revealed" ? 180 : 160
               },
               transition: {
                 type: "spring",
