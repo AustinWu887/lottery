@@ -40,7 +40,7 @@ if (!fs.existsSync('dist')) {
 
 // 複製並修改 index.html
 const htmlContent = fs.readFileSync('index.html', 'utf8');
-const basePath = isProduction ? '/beads' : '';
+const basePath = isProduction ? '/lottery' : '';
 const modifiedHtml = htmlContent
   .replace(
     '<script type="module" src="/src/main.tsx"></script>',
@@ -48,6 +48,7 @@ const modifiedHtml = htmlContent
   )
   .replace(/href="\/vite\.svg"/g, `href="${basePath}/vite.svg"`);
 fs.writeFileSync('dist/index.html', modifiedHtml);
+fs.writeFileSync('dist/.nojekyll', ''); // Prevent GitHub Pages from ignoring files with underscores
 
 // 建置配置
 const buildOptions = {
@@ -83,15 +84,15 @@ if (isProduction) {
 } else {
   // 開發模式 - 使用 watch 和 serve
   const ctx = await esbuild.context(buildOptions);
-  
+
   await ctx.watch();
   console.log('👀 監聽檔案變更中...');
-  
+
   const { host, port } = await ctx.serve({
     servedir: 'dist',
     host: 'localhost',
     port: 3000,
   });
-  
+
   console.log(`🚀 開發伺服器啟動於 http://localhost:${port}`);
 }
