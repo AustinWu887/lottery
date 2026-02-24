@@ -61,9 +61,9 @@ export function ResultView() {
                         </div>
 
                         {item.winners.length > 0 ? (
-                            <div className="flex flex-wrap gap-3">
+                            <div className="grid grid-cols-5 md:grid-cols-10 gap-2 md:gap-3 justify-center max-w-full">
                                 {item.winners.map((num, i) => (
-                                    <div key={i} className="bg-background border border-primary/20 px-5 py-2.5 rounded-lg font-bold text-lg shadow-sm text-foreground">
+                                    <div key={i} className="bg-background text-foreground border-2 border-primary/30 rounded-xl md:rounded-2xl font-black text-lg md:text-xl shadow-sm aspect-square flex items-center justify-center leading-none">
                                         {num}
                                     </div>
                                 ))}

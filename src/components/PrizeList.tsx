@@ -4,6 +4,7 @@ import {
     closestCenter,
     KeyboardSensor,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
     DragEndEvent,
@@ -36,7 +37,7 @@ function SortableItem({ prize, onRemove }: { prize: Prize, onRemove: (id: string
 
     return (
         <div ref={setNodeRef} style={style} className="flex items-center gap-3 p-3 bg-card border rounded-md shadow-sm mb-2 hover:border-primary/50 transition-colors">
-            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground">
+            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none">
                 <GripVertical size={20} />
             </div>
             <div className="flex-1 font-medium">{prize.name}</div>
@@ -54,7 +55,17 @@ export function PrizeList() {
     const removePrize = useLotteryStore((state) => state.removePrize);
 
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5,
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
+            },
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })

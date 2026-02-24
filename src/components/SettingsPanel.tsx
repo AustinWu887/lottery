@@ -5,7 +5,8 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
-import { PlusCircle } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { PlusCircle, Dices, PackageOpen } from 'lucide-react';
 
 export function SettingsPanel() {
     const participantsCount = useLotteryStore(state => state.participantsCount);
@@ -14,6 +15,9 @@ export function SettingsPanel() {
 
     const isAutoDrawMode = useLotteryStore(state => state.isAutoDrawMode);
     const setAutoDrawMode = useLotteryStore(state => state.setAutoDrawMode);
+
+    const lotteryEffect = useLotteryStore(state => state.lotteryEffect);
+    const setLotteryEffect = useLotteryStore(state => state.setLotteryEffect);
 
     const [newPrizeName, setNewPrizeName] = useState('');
     const [newPrizeCount, setNewPrizeCount] = useState('1');
@@ -47,11 +51,42 @@ export function SettingsPanel() {
                         min="1"
                         value={participantsCount || ''}
                         onChange={(e) => setParticipantsCount(Math.max(1, parseInt(e.target.value) || 1))}
+                        onFocus={() => setParticipantsCount('' as any)} // 點擊清空
                         className="w-full text-lg h-12"
                     />
                     <p className="text-sm text-primary font-medium mt-2">
                         抽獎號碼範圍將會是 1 到 {participantsCount}
                     </p>
+                </div>
+
+                <div className="pt-4 border-t mt-4">
+                    <Label className="text-base mb-3 block">抽獎動畫效果</Label>
+                    <RadioGroup
+                        value={lotteryEffect}
+                        onValueChange={(value) => setLotteryEffect(value as 'slot' | 'box')}
+                        className="grid grid-cols-2 gap-4"
+                    >
+                        <div>
+                            <RadioGroupItem value="slot" id="effect-slot" className="peer sr-only" />
+                            <Label
+                                htmlFor="effect-slot"
+                                className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer"
+                            >
+                                <Dices className="mb-3 h-8 w-8" />
+                                <span className="text-md font-bold">拉霸機</span>
+                            </Label>
+                        </div>
+                        <div>
+                            <RadioGroupItem value="box" id="effect-box" className="peer sr-only" />
+                            <Label
+                                htmlFor="effect-box"
+                                className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer"
+                            >
+                                <PackageOpen className="mb-3 h-8 w-8" />
+                                <span className="text-md font-bold">摸彩箱</span>
+                            </Label>
+                        </div>
+                    </RadioGroup>
                 </div>
 
                 <div className="pt-4 border-t mt-4">
@@ -90,6 +125,7 @@ export function SettingsPanel() {
                             placeholder="例如：頭獎、MacBook Pro..."
                             value={newPrizeName}
                             onChange={(e) => setNewPrizeName(e.target.value)}
+                            onFocus={() => setNewPrizeName('')}
                             className="h-10"
                         />
                     </div>
@@ -101,6 +137,7 @@ export function SettingsPanel() {
                             min="1"
                             value={newPrizeCount}
                             onChange={(e) => setNewPrizeCount(e.target.value)}
+                            onFocus={() => setNewPrizeCount('')} // 點擊清空
                             className="h-10"
                         />
                     </div>

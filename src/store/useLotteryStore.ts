@@ -22,6 +22,10 @@ export interface LotteryState {
   isAutoDrawMode: boolean;
   setAutoDrawMode: (mode: boolean) => void;
 
+  // 抽獎效果選擇
+  lotteryEffect: 'slot' | 'box';
+  setLotteryEffect: (effect: 'slot' | 'box') => void;
+
   setParticipantsCount: (count: number) => void;
   addPrize: (prize: Omit<Prize, 'id'>) => void;
   removePrize: (id: string) => void;
@@ -51,8 +55,10 @@ export const useLotteryStore = create<LotteryState>()(
       results: {},
       currentPrizeIndex: 0,
       isAutoDrawMode: false,
+      lotteryEffect: 'slot',
 
       setAutoDrawMode: (mode) => set({ isAutoDrawMode: mode }),
+      setLotteryEffect: (effect) => set({ lotteryEffect: effect }),
 
       setParticipantsCount: (count) => set({ participantsCount: count }),
 
