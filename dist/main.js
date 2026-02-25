@@ -42787,7 +42787,7 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
 // src/components/LotteryBoard.tsx
 var import_jsx_runtime26 = __toESM(require_jsx_runtime());
 function LotteryBoard() {
-  const { prizes, currentPrizeIndex, addResult, results, nextPrize, isAutoDrawMode, lotteryEffect } = useLotteryStore();
+  const { prizes, currentPrizeIndex, addResult, results, nextPrize, isAutoDrawMode, lotteryEffect, participantsCount } = useLotteryStore();
   const [isDrawing, setIsDrawing] = (0, import_react37.useState)(false);
   const [currentWinner, setCurrentWinner] = (0, import_react37.useState)(null);
   const [isAutoPlaying, setIsAutoPlaying] = (0, import_react37.useState)(false);
@@ -42958,19 +42958,6 @@ function LotteryBoard() {
       /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { className: "text-3xl md:text-4xl font-black tracking-widest leading-none", children: currentPrize.name }),
       /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("img", { src: `${""}/274262.jpg`, alt: "", className: "w-7 h-7 md:w-9 md:h-9 object-contain" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "mb-4 md:mb-8 bg-muted/50 px-4 py-1.5 md:px-6 md:py-2 rounded-full border border-border/50 text-muted-foreground font-semibold flex items-center gap-2 text-sm md:text-base", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { children: [
-        "\u7E3D\u5171 ",
-        currentPrize.count,
-        " \u540D"
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "w-1 h-1 rounded-full bg-border" }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { className: "text-foreground", children: [
-        "\u5269\u9918 ",
-        remainCount,
-        " \u540D"
-      ] })
-    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "my-2 md:my-4 scale-[0.75] md:scale-100 origin-top h-[240px] md:h-auto flex items-center justify-center", children: lotteryEffect === "slot" ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
       SlotMachine,
       {
@@ -42986,6 +42973,11 @@ function LotteryBoard() {
         onDrawComplete: handleDrawComplete
       }
     ) }),
+    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "mb-4 md:mb-8 bg-muted/50 px-4 py-1.5 md:px-6 md:py-2 rounded-full border border-border/50 text-muted-foreground font-semibold flex items-center gap-2 text-sm md:text-base", children: /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { children: [
+      "\u62BD\u734E\u4EBA\u6578 ",
+      participantsCount,
+      " \u4EBA"
+    ] }) }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2", children: [
       /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
         Button,
@@ -43012,7 +43004,7 @@ function LotteryBoard() {
       )
     ] }),
     drawnForThisPrize.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "mt-6 md:mt-10 w-full pt-6 md:pt-8 border-t border-border/50 relative", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { className: "text-xs md:text-sm font-bold text-muted-foreground mb-4 text-center uppercase tracking-widest", children: "\u76EE\u524D\u4E2D\u734E\u865F\u78BC" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { className: "text-xs md:text-sm font-bold text-muted-foreground mb-4 text-center uppercase tracking-widest", children: "\u4E2D\u734E\u865F\u78BC" }),
       /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "grid grid-cols-5 md:grid-cols-10 gap-2 md:gap-3 justify-center max-w-full", children: drawnForThisPrize.map((num, i) => /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
         "div",
         {
