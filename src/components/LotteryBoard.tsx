@@ -168,31 +168,20 @@ export function LotteryBoard() {
             </div>
 
             <div className="flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2">
-                {isAutoDrawMode ? (
-                    <Button
-                        size="lg"
-                        variant={isAutoPlaying ? "destructive" : "default"}
-                        className="text-lg md:text-2xl h-14 md:h-16 px-6 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all w-full max-w-[280px]"
-                        onClick={toggleAutoPlay}
-                        disabled={remainCount === 0 && !isAutoPlaying}
-                    >
-                        {isAutoPlaying ? 'Stop' : (
-                            <>
-                                <PlayCircle className="mr-2 h-5 w-5 md:h-6 md:w-6" />
-                                Ready! Set! GO!
-                            </>
-                        )}
-                    </Button>
-                ) : (
-                    <Button
-                        size="lg"
-                        className="text-xl md:text-2xl h-14 md:h-16 px-8 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 min-w-[200px]"
-                        onClick={handleDraw}
-                        disabled={isDrawing || remainCount === 0}
-                    >
-                        {isDrawing ? '抽獎中...' : '開始抽獎'}
-                    </Button>
-                )}
+                <Button
+                    size="lg"
+                    variant={isAutoPlaying ? "destructive" : "default"}
+                    className="text-lg md:text-2xl h-14 md:h-16 px-6 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all w-full max-w-[280px]"
+                    onClick={toggleAutoPlay}
+                    disabled={remainCount === 0 && !isAutoPlaying}
+                >
+                    {isAutoPlaying ? 'Stop' : (
+                        <>
+                            <PlayCircle className="mr-2 h-5 w-5 md:h-6 md:w-6" />
+                            Ready! Set! GO!
+                        </>
+                    )}
+                </Button>
 
                 {!isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && (
                     <Button

@@ -42922,7 +42922,7 @@ function LotteryBoard() {
       }
     ) }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2", children: [
-      isAutoDrawMode ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
         Button,
         {
           size: "lg",
@@ -42934,15 +42934,6 @@ function LotteryBoard() {
             /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(CirclePlay, { className: "mr-2 h-5 w-5 md:h-6 md:w-6" }),
             "Ready! Set! GO!"
           ] })
-        }
-      ) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
-        Button,
-        {
-          size: "lg",
-          className: "text-xl md:text-2xl h-14 md:h-16 px-8 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 min-w-[200px]",
-          onClick: handleDraw,
-          disabled: isDrawing || remainCount === 0,
-          children: isDrawing ? "\u62BD\u734E\u4E2D..." : "\u958B\u59CB\u62BD\u734E"
         }
       ),
       !isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
