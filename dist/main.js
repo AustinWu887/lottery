@@ -42731,7 +42731,7 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
     /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { className: "absolute bottom-0 w-[240px] h-[180px] bg-gradient-to-br from-primary to-primary/80 rounded-b-3xl rounded-t-xl shadow-2xl border-4 border-primary/20 z-20 flex items-center justify-center overflow-hidden", children: [
       /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none" }),
       /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute top-0 w-[140px] h-[30px] bg-black/40 rounded-[50%] -translate-y-1/2 blur-[2px]" }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("img", { src: "/273570.jpg", alt: "", className: "absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none scale-150" })
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("img", { src: `${""}/273570.jpg`, alt: "", className: "absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none scale-150" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute bottom-[20px] w-[220px] h-[140px] bg-primary/90 rounded-b-2xl z-0" }),
     /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute inset-0 z-10 pointer-events-none flex items-start justify-center overflow-hidden", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(AnimatePresence, { children: (phase === "reaching" || phase === "grabbing" || phase === "pulling" || phase === "revealed") && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
@@ -42869,9 +42869,9 @@ function LotteryBoard() {
   return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex flex-col items-center justify-start p-4 pt-6 md:p-12 bg-card rounded-3xl border shadow-md max-w-2xl mx-auto min-h-[500px] animate-in slide-in-from-bottom-8 duration-500 relative overflow-hidden", children: [
     /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[300px] bg-primary/5 rounded-full blur-3xl -z-10" }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6 text-primary drop-shadow-sm", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("img", { src: "/274262.jpg", alt: "", className: "w-7 h-7 md:w-9 md:h-9 object-contain" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("img", { src: `${""}/274262.jpg`, alt: "", className: "w-7 h-7 md:w-9 md:h-9 object-contain" }),
       /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { className: "text-3xl md:text-4xl font-black tracking-widest leading-none", children: currentPrize.name }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("img", { src: "/274262.jpg", alt: "", className: "w-7 h-7 md:w-9 md:h-9 object-contain" })
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("img", { src: `${""}/274262.jpg`, alt: "", className: "w-7 h-7 md:w-9 md:h-9 object-contain" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "mb-4 md:mb-8 bg-muted/50 px-4 py-1.5 md:px-6 md:py-2 rounded-full border border-border/50 text-muted-foreground font-semibold flex items-center gap-2 text-sm md:text-base", children: [
       /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { children: [

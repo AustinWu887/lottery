@@ -79,6 +79,7 @@ const buildOptions = {
   plugins: [postcssPlugin],
   define: {
     'process.env.NODE_ENV': isProduction ? '"production"' : '"development"',
+    '__BASE_PATH__': isProduction ? '"/lottery"' : '""',
   },
   alias: {
     '@': path.resolve(process.cwd(), 'src'),

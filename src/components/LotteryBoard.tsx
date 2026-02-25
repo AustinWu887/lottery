@@ -125,9 +125,9 @@ export function LotteryBoard() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[300px] bg-primary/5 rounded-full blur-3xl -z-10" />
 
             <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6 text-primary drop-shadow-sm">
-                <img src="/274262.jpg" alt="" className="w-7 h-7 md:w-9 md:h-9 object-contain" />
+                <img src={`${__BASE_PATH__}/274262.jpg`} alt="" className="w-7 h-7 md:w-9 md:h-9 object-contain" />
                 <h2 className="text-3xl md:text-4xl font-black tracking-widest leading-none">{currentPrize.name}</h2>
-                <img src="/274262.jpg" alt="" className="w-7 h-7 md:w-9 md:h-9 object-contain" />
+                <img src={`${__BASE_PATH__}/274262.jpg`} alt="" className="w-7 h-7 md:w-9 md:h-9 object-contain" />
             </div>
 
             <div className="mb-4 md:mb-8 bg-muted/50 px-4 py-1.5 md:px-6 md:py-2 rounded-full border border-border/50 text-muted-foreground font-semibold flex items-center gap-2 text-sm md:text-base">

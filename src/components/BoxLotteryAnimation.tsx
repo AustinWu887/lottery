@@ -133,7 +133,7 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none" />
                 {/* 箱子開口 (視覺暗示) */}
                 <div className="absolute top-0 w-[140px] h-[30px] bg-black/40 rounded-[50%] -translate-y-1/2 blur-[2px]" />
-                <img src="/273570.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none scale-150" />
+                <img src={`${__BASE_PATH__}/273570.jpg`} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none scale-150" />
             </div>
 
             {/* 箱子的後壁 (創造手伸進去的深度感) */}
