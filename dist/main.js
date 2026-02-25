@@ -42793,53 +42793,116 @@ function LotteryBoard() {
   const [isDrawing, setIsDrawing] = (0, import_react37.useState)(false);
   const [currentWinner, setCurrentWinner] = (0, import_react37.useState)(null);
   const [isAutoPlaying, setIsAutoPlaying] = (0, import_react37.useState)(false);
+  const [countdown, setCountdown] = (0, import_react37.useState)(null);
   const autoPlayTimerRef = (0, import_react37.useRef)(void 0);
+  const countdownRef = (0, import_react37.useRef)(void 0);
+  const isAutoPlayingRef = (0, import_react37.useRef)(false);
   const targetPrizeIndex = prizes.length - 1 - currentPrizeIndex;
   const currentPrize = prizes[targetPrizeIndex];
   const drawnForThisPrize = currentPrize ? results[currentPrize.id] || [] : [];
   const remainCount = currentPrize ? currentPrize.count - drawnForThisPrize.length : 0;
   const isLastPrize = currentPrizeIndex === prizes.length - 1;
+  const cancelAllTimers = (0, import_react37.useCallback)(() => {
+    if (autoPlayTimerRef.current) {
+      clearTimeout(autoPlayTimerRef.current);
+      autoPlayTimerRef.current = void 0;
+    }
+    if (countdownRef.current) {
+      clearInterval(countdownRef.current);
+      countdownRef.current = void 0;
+    }
+    setCountdown(null);
+  }, []);
+  const scheduleTimer = (0, import_react37.useCallback)((action, seconds) => {
+    cancelAllTimers();
+    setCountdown(seconds);
+    countdownRef.current = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === null || prev <= 1) {
+          if (countdownRef.current) clearInterval(countdownRef.current);
+          countdownRef.current = void 0;
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1e3);
+    autoPlayTimerRef.current = setTimeout(() => {
+      cancelAllTimers();
+      action();
+    }, seconds * 1e3);
+  }, [cancelAllTimers]);
+  const scheduleNextDraw = (0, import_react37.useCallback)((seconds) => {
+    scheduleTimer(() => {
+      const state = useLotteryStore.getState();
+      const ti = state.prizes.length - 1 - state.currentPrizeIndex;
+      const cp = state.prizes[ti];
+      if (!cp) return;
+      const drawn = state.results[cp.id] || [];
+      const remain = cp.count - drawn.length;
+      if (remain > 0) {
+        setIsDrawing(true);
+        setCurrentWinner(null);
+      }
+    }, seconds);
+  }, [scheduleTimer]);
+  const scheduleNextPrize = (0, import_react37.useCallback)((seconds) => {
+    scheduleTimer(() => {
+      nextPrize();
+      if (isAutoPlayingRef.current) {
+        setTimeout(() => {
+          const state = useLotteryStore.getState();
+          const ti = state.prizes.length - 1 - state.currentPrizeIndex;
+          const cp = state.prizes[ti];
+          if (cp) {
+            const drawn = state.results[cp.id] || [];
+            const remain = cp.count - drawn.length;
+            if (remain > 0) {
+              scheduleNextDraw(5);
+            }
+          }
+        }, 50);
+      }
+    }, seconds);
+  }, [scheduleTimer, nextPrize, scheduleNextDraw]);
+  (0, import_react37.useEffect)(() => {
+    setCurrentWinner(null);
+    setIsDrawing(false);
+  }, [currentPrizeIndex]);
   (0, import_react37.useEffect)(() => {
     const hasResults = Object.values(results).some((arr) => arr.length > 0);
     if (!hasResults) {
       setCurrentWinner(null);
       setIsDrawing(false);
       setIsAutoPlaying(false);
-      if (autoPlayTimerRef.current) {
-        clearTimeout(autoPlayTimerRef.current);
-        autoPlayTimerRef.current = void 0;
-      }
+      isAutoPlayingRef.current = false;
+      cancelAllTimers();
     }
-  }, [results, currentPrizeIndex]);
+  }, [results, cancelAllTimers]);
   const handleDraw = (0, import_react37.useCallback)(() => {
     if (remainCount <= 0 || isDrawing || !currentPrize) return;
+    cancelAllTimers();
     setIsDrawing(true);
     setCurrentWinner(null);
-  }, [remainCount, isDrawing, currentPrize]);
+  }, [remainCount, isDrawing, currentPrize, cancelAllTimers]);
   const handleDrawComplete = (winnerNumber) => {
     if (!currentPrize) return;
     addResult(currentPrize.id, [winnerNumber]);
     setCurrentWinner(winnerNumber);
     setIsDrawing(false);
-  };
-  (0, import_react37.useEffect)(() => {
-    if (!currentPrize) return;
-    if (remainCount <= 0 && (isAutoPlaying || isLastPrize)) {
-      autoPlayTimerRef.current = setTimeout(() => {
-        nextPrize();
-      }, 1e4);
-    } else if (isAutoPlaying && !isDrawing) {
-      autoPlayTimerRef.current = setTimeout(() => {
-        handleDraw();
-      }, 1e4);
+    const newDrawn = (results[currentPrize.id] || []).length + 1;
+    const newRemain = currentPrize.count - newDrawn;
+    if (newRemain <= 0) {
+      if (isAutoPlayingRef.current || isLastPrize) {
+        scheduleNextPrize(5);
+      }
+    } else if (isAutoPlayingRef.current) {
+      scheduleNextDraw(5);
     }
-    return () => {
-      if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
-    };
-  }, [isDrawing, remainCount, isAutoPlaying, nextPrize, currentPrize, handleDraw]);
+  };
   (0, import_react37.useEffect)(() => {
     if (currentPrizeIndex >= prizes.length && isAutoPlaying) {
       setIsAutoPlaying(false);
+      isAutoPlayingRef.current = false;
     }
   }, [currentPrizeIndex, prizes.length, isAutoPlaying]);
   (0, import_react37.useEffect)(() => {
@@ -42867,12 +42930,14 @@ function LotteryBoard() {
   const toggleAutoPlay = () => {
     if (!isAutoPlaying) {
       setIsAutoPlaying(true);
+      isAutoPlayingRef.current = true;
       if (!isDrawing && remainCount > 0) {
         handleDraw();
       }
     } else {
       setIsAutoPlaying(false);
-      if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
+      isAutoPlayingRef.current = false;
+      cancelAllTimers();
     }
   };
   if (prizes.length === 0) {
@@ -42923,21 +42988,26 @@ function LotteryBoard() {
         onDrawComplete: handleDrawComplete
       }
     ) }),
+    countdown !== null && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "text-center text-muted-foreground text-sm font-semibold mt-2 animate-in fade-in", children: [
+      "\u4E0B\u4E00\u6B65\u5012\u6578 ",
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "text-primary text-lg font-black", children: countdown }),
+      " \u79D2"
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2", children: [
       /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
         Button,
         {
           size: "lg",
           className: "text-lg md:text-2xl h-14 md:h-16 px-6 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all w-full max-w-[280px]",
-          onClick: toggleAutoPlay,
-          disabled: isAutoPlaying || remainCount === 0,
+          onClick: isAutoDrawMode ? toggleAutoPlay : handleDraw,
+          disabled: isAutoPlaying || isDrawing || remainCount === 0,
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(CirclePlay, { className: "mr-2 h-5 w-5 md:h-6 md:w-6" }),
             "Ready! Set! GO!"
           ]
         }
       ),
-      !isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      !isAutoPlaying && !isLastPrize && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
         Button,
         {
           size: "lg",

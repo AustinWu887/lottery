@@ -39,15 +39,21 @@ if (!fs.existsSync('dist')) {
 }
 
 // 複製並修改 index.html
-const htmlContent = fs.readFileSync('index.html', 'utf8');
 const basePath = isProduction ? '/lottery' : '';
-const modifiedHtml = htmlContent
-  .replace(
-    '<script type="module" src="/src/main.tsx"></script>',
-    `<link rel="stylesheet" href="${basePath}/main.css">\n    <script type="module" src="${basePath}/main.js"></script>`
-  )
-  .replace(/href="\/vite\.svg"/g, `href="${basePath}/vite.svg"`);
-fs.writeFileSync('dist/index.html', modifiedHtml);
+
+function generateHtml() {
+  const htmlContent = fs.readFileSync('index.html', 'utf8');
+  const cacheBuster = isProduction ? '' : `?t=${Date.now()}`;
+  const modifiedHtml = htmlContent
+    .replace(
+      '<script type="module" src="/src/main.tsx"></script>',
+      `<link rel="stylesheet" href="${basePath}/main.css${cacheBuster}">\n    <script type="module" src="${basePath}/main.js${cacheBuster}"></script>`
+    )
+    .replace(/href="\/vite\.svg"/g, `href="${basePath}/vite.svg"`);
+  fs.writeFileSync('dist/index.html', modifiedHtml);
+}
+
+generateHtml();
 fs.writeFileSync('dist/.nojekyll', ''); // Prevent GitHub Pages from ignoring files with underscores
 
 // 複製 public 資料夾內容到 dist
@@ -76,7 +82,20 @@ const buildOptions = {
     '.jsx': 'jsx',
     '.js': 'js',
   },
-  plugins: [postcssPlugin],
+  plugins: [
+    postcssPlugin,
+    // 每次 rebuild 後重新產生 index.html（更新 cache-buster）
+    {
+      name: 'rebuild-html',
+      setup(build) {
+        build.onEnd(() => {
+          if (!isProduction) {
+            generateHtml();
+          }
+        });
+      },
+    },
+  ],
   define: {
     'process.env.NODE_ENV': isProduction ? '"production"' : '"development"',
     '__BASE_PATH__': isProduction ? '"/lottery"' : '""',

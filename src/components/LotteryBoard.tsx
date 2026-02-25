@@ -11,7 +11,10 @@ export function LotteryBoard() {
     const [isDrawing, setIsDrawing] = useState(false);
     const [currentWinner, setCurrentWinner] = useState<number | null>(null);
     const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+    const [countdown, setCountdown] = useState<number | null>(null);
     const autoPlayTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+    const countdownRef = useRef<NodeJS.Timeout | undefined>(undefined);
+    const isAutoPlayingRef = useRef(false);
 
     // 決定目前要抽的獎項
     const targetPrizeIndex = prizes.length - 1 - currentPrizeIndex;
@@ -20,62 +23,133 @@ export function LotteryBoard() {
     const remainCount = currentPrize ? currentPrize.count - drawnForThisPrize.length : 0;
     const isLastPrize = currentPrizeIndex === prizes.length - 1;
 
-    // 重新抽籤時清除上一個號碼
+    // ─── 計時器工具 ───
+    const cancelAllTimers = useCallback(() => {
+        if (autoPlayTimerRef.current) {
+            clearTimeout(autoPlayTimerRef.current);
+            autoPlayTimerRef.current = undefined;
+        }
+        if (countdownRef.current) {
+            clearInterval(countdownRef.current);
+            countdownRef.current = undefined;
+        }
+        setCountdown(null);
+    }, []);
+
+    const scheduleTimer = useCallback((action: () => void, seconds: number) => {
+        cancelAllTimers();
+        setCountdown(seconds);
+        countdownRef.current = setInterval(() => {
+            setCountdown(prev => {
+                if (prev === null || prev <= 1) {
+                    if (countdownRef.current) clearInterval(countdownRef.current);
+                    countdownRef.current = undefined;
+                    return null;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+        autoPlayTimerRef.current = setTimeout(() => {
+            cancelAllTimers();
+            action();
+        }, seconds * 1000);
+    }, [cancelAllTimers]);
+
+    // ─── 排程下一次抽獎（從 store 取最新狀態） ───
+    const scheduleNextDraw = useCallback((seconds: number) => {
+        scheduleTimer(() => {
+            const state = useLotteryStore.getState();
+            const ti = state.prizes.length - 1 - state.currentPrizeIndex;
+            const cp = state.prizes[ti];
+            if (!cp) return;
+            const drawn = state.results[cp.id] || [];
+            const remain = cp.count - drawn.length;
+            if (remain > 0) {
+                setIsDrawing(true);
+                setCurrentWinner(null);
+            }
+        }, seconds);
+    }, [scheduleTimer]);
+
+    // ─── 排程跳下一個獎項，跳完後再排第一球 ───
+    const scheduleNextPrize = useCallback((seconds: number) => {
+        scheduleTimer(() => {
+            nextPrize();
+            // 跳完後，如果還在自動模式，排程第一球
+            if (isAutoPlayingRef.current) {
+                // 用 setTimeout 讓 React 先 render 完新獎項
+                setTimeout(() => {
+                    const state = useLotteryStore.getState();
+                    const ti = state.prizes.length - 1 - state.currentPrizeIndex;
+                    const cp = state.prizes[ti];
+                    if (cp) {
+                        const drawn = state.results[cp.id] || [];
+                        const remain = cp.count - drawn.length;
+                        if (remain > 0) {
+                            scheduleNextDraw(5);
+                        }
+                    }
+                }, 50);
+            }
+        }, seconds);
+    }, [scheduleTimer, nextPrize, scheduleNextDraw]);
+
+    // ─── 切換獎項時立即清除上一個號碼 ───
+    useEffect(() => {
+        setCurrentWinner(null);
+        setIsDrawing(false);
+    }, [currentPrizeIndex]);
+
+    // ─── 重新抽籤時清除狀態 ───
     useEffect(() => {
         const hasResults = Object.values(results).some(arr => arr.length > 0);
         if (!hasResults) {
             setCurrentWinner(null);
             setIsDrawing(false);
             setIsAutoPlaying(false);
-            if (autoPlayTimerRef.current) {
-                clearTimeout(autoPlayTimerRef.current);
-                autoPlayTimerRef.current = undefined;
-            }
+            isAutoPlayingRef.current = false;
+            cancelAllTimers();
         }
-    }, [results, currentPrizeIndex]);
+    }, [results, cancelAllTimers]);
 
+    // ─── 抽獎操作 ───
     const handleDraw = useCallback(() => {
         if (remainCount <= 0 || isDrawing || !currentPrize) return;
+        cancelAllTimers();
         setIsDrawing(true);
         setCurrentWinner(null);
-    }, [remainCount, isDrawing, currentPrize]);
+    }, [remainCount, isDrawing, currentPrize, cancelAllTimers]);
 
     const handleDrawComplete = (winnerNumber: number) => {
         if (!currentPrize) return;
         addResult(currentPrize.id, [winnerNumber]);
         setCurrentWinner(winnerNumber);
         setIsDrawing(false);
+
+        // 計算抽完這球後的剩餘名額
+        const newDrawn = (results[currentPrize.id] || []).length + 1;
+        const newRemain = currentPrize.count - newDrawn;
+
+        if (newRemain <= 0) {
+            // 這個獎項抽完了
+            if (isAutoPlayingRef.current || isLastPrize) {
+                scheduleNextPrize(5);
+            }
+        } else if (isAutoPlayingRef.current) {
+            // 還有剩餘名額，自動模式下倒數後抽下一球
+            scheduleNextDraw(5);
+        }
     };
 
-    // 自動連抽邏輯
-    useEffect(() => {
-        if (!currentPrize) return;
-
-        if (remainCount <= 0 && (isAutoPlaying || isLastPrize)) {
-            // 這個獎項抽完了，自動進入下一個獎項（或抽完畫面）
-            autoPlayTimerRef.current = setTimeout(() => {
-                nextPrize();
-            }, 10000); // UI 緩衝 5 秒切換獎項
-        } else if (isAutoPlaying && !isDrawing) {
-            // 這個獎項還有剩額，且目前不在抽獎動畫中，自動開下一球
-            autoPlayTimerRef.current = setTimeout(() => {
-                handleDraw();
-            }, 10000); // 每次動畫結束後，停留 5 秒再抽下一個
-        }
-
-        return () => {
-            if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
-        };
-    }, [isDrawing, remainCount, isAutoPlaying, nextPrize, currentPrize, handleDraw]);
-
-    // 如果所有的都播完了，取消自動播放狀態
+    // ─── 如果所有的都播完了，取消自動播放狀態 ───
     useEffect(() => {
         if (currentPrizeIndex >= prizes.length && isAutoPlaying) {
             setIsAutoPlaying(false);
+            isAutoPlayingRef.current = false;
         }
     }, [currentPrizeIndex, prizes.length, isAutoPlaying]);
 
-    // 防止手機或平板螢幕在抽獎期間休眠
+    // ─── 防止手機或平板螢幕在抽獎期間休眠 ───
     useEffect(() => {
         let wakeLock: any = null;
         const requestWakeLock = async () => {
@@ -103,13 +177,15 @@ export function LotteryBoard() {
     const toggleAutoPlay = () => {
         if (!isAutoPlaying) {
             setIsAutoPlaying(true);
+            isAutoPlayingRef.current = true;
             // 立即觸發第一次抽獎
             if (!isDrawing && remainCount > 0) {
                 handleDraw();
             }
         } else {
             setIsAutoPlaying(false);
-            if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
+            isAutoPlayingRef.current = false;
+            cancelAllTimers();
         }
     };
 
@@ -167,18 +243,24 @@ export function LotteryBoard() {
                 )}
             </div>
 
+            {countdown !== null && (
+                <div className="text-center text-muted-foreground text-sm font-semibold mt-2 animate-in fade-in">
+                    下一步倒數 <span className="text-primary text-lg font-black">{countdown}</span> 秒
+                </div>
+            )}
+
             <div className="flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2">
                 <Button
                     size="lg"
                     className="text-lg md:text-2xl h-14 md:h-16 px-6 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all w-full max-w-[280px]"
-                    onClick={toggleAutoPlay}
-                    disabled={isAutoPlaying || remainCount === 0}
+                    onClick={isAutoDrawMode ? toggleAutoPlay : handleDraw}
+                    disabled={isAutoPlaying || isDrawing || remainCount === 0}
                 >
                     <PlayCircle className="mr-2 h-5 w-5 md:h-6 md:w-6" />
                     Ready! Set! GO!
                 </Button>
 
-                {!isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && (
+                {!isAutoPlaying && !isLastPrize && remainCount === 0 && (
                     <Button
                         size="lg"
                         variant="outline"
