@@ -101,10 +101,9 @@ export function SlotMachine({ isDrawing, currentWinner, onDrawComplete }: SlotMa
         frame();
     };
 
-    const padLength = Math.max(2, String(participantsCount).length);
     const displayString = displayNumber === 0
         ? '?'
-        : String(displayNumber).padStart(padLength, '0');
+        : String(displayNumber);
 
     return (
         <div className="relative overflow-hidden bg-gradient-to-b from-card to-muted border-[6px] border border-primary/20 rounded-3xl w-[320px] h-[180px] flex items-center justify-center shadow-[inset_0_10px_20px_rgba(0,0,0,0.1)]">

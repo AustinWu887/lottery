@@ -86,7 +86,7 @@ export function LotteryBoard() {
                         const drawn = state.results[cp.id] || [];
                         const remain = cp.count - drawn.length;
                         if (remain > 0) {
-                            scheduleNextDraw(5);
+                            scheduleNextDraw(10);
                         }
                     }
                 }, 50);
@@ -133,11 +133,11 @@ export function LotteryBoard() {
         if (newRemain <= 0) {
             // 這個獎項抽完了
             if (isAutoPlayingRef.current || isLastPrize) {
-                scheduleNextPrize(5);
+                scheduleNextPrize(10);
             }
         } else if (isAutoPlayingRef.current) {
             // 還有剩餘名額，自動模式下倒數後抽下一球
-            scheduleNextDraw(5);
+            scheduleNextDraw(10);
         }
     };
 
@@ -243,11 +243,6 @@ export function LotteryBoard() {
                 )}
             </div>
 
-            {countdown !== null && (
-                <div className="text-center text-muted-foreground text-sm font-semibold mt-2 animate-in fade-in">
-                    下一步倒數 <span className="text-primary text-lg font-black">{countdown}</span> 秒
-                </div>
-            )}
 
             <div className="flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2">
                 <Button

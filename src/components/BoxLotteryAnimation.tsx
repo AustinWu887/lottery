@@ -103,10 +103,9 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
         frame();
     };
 
-    const padLength = Math.max(2, String(participantsCount).length);
     const displayString = displayNumber === null || displayNumber === 0
         ? ''
-        : String(displayNumber).padStart(padLength, '0');
+        : String(displayNumber);
 
     // 定義動畫變體 (Variants) 來處理複雜的關鍵影格
     const handVariants: any = {

@@ -34565,8 +34565,7 @@ function SlotMachine({ isDrawing, currentWinner, onDrawComplete }) {
     };
     frame2();
   };
-  const padLength = Math.max(2, String(participantsCount).length);
-  const displayString = displayNumber === 0 ? "?" : String(displayNumber).padStart(padLength, "0");
+  const displayString = displayNumber === 0 ? "?" : String(displayNumber);
   return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { className: "relative overflow-hidden bg-gradient-to-b from-card to-muted border-[6px] border border-primary/20 rounded-3xl w-[320px] h-[180px] flex items-center justify-center shadow-[inset_0_10px_20px_rgba(0,0,0,0.1)]", children: [
     /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black/20 to-transparent z-10 pointer-events-none" }),
     /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/20 to-transparent z-10 pointer-events-none" }),
@@ -42699,8 +42698,7 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
     };
     frame2();
   };
-  const padLength = Math.max(2, String(participantsCount).length);
-  const displayString = displayNumber === null || displayNumber === 0 ? "" : String(displayNumber).padStart(padLength, "0");
+  const displayString = displayNumber === null || displayNumber === 0 ? "" : String(displayNumber);
   const handVariants = {
     idle: { y: -200, opacity: 0 },
     reaching: {
@@ -42857,7 +42855,7 @@ function LotteryBoard() {
             const drawn = state.results[cp.id] || [];
             const remain = cp.count - drawn.length;
             if (remain > 0) {
-              scheduleNextDraw(5);
+              scheduleNextDraw(10);
             }
           }
         }, 50);
@@ -42893,10 +42891,10 @@ function LotteryBoard() {
     const newRemain = currentPrize.count - newDrawn;
     if (newRemain <= 0) {
       if (isAutoPlayingRef.current || isLastPrize) {
-        scheduleNextPrize(5);
+        scheduleNextPrize(10);
       }
     } else if (isAutoPlayingRef.current) {
-      scheduleNextDraw(5);
+      scheduleNextDraw(10);
     }
   };
   (0, import_react37.useEffect)(() => {
@@ -42988,11 +42986,6 @@ function LotteryBoard() {
         onDrawComplete: handleDrawComplete
       }
     ) }),
-    countdown !== null && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "text-center text-muted-foreground text-sm font-semibold mt-2 animate-in fade-in", children: [
-      "\u4E0B\u4E00\u6B65\u5012\u6578 ",
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "text-primary text-lg font-black", children: countdown }),
-      " \u79D2"
-    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2", children: [
       /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
         Button,
