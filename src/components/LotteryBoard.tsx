@@ -40,12 +40,12 @@ export function LotteryBoard() {
             // 這個獎項抽完了，自動進入下一個獎項
             autoPlayTimerRef.current = setTimeout(() => {
                 nextPrize();
-            }, 2500); // UI 緩衝 2.5 秒切換獎項
+            }, 5000); // UI 緩衝 5 秒切換獎項
         } else if (isAutoPlaying && !isDrawing) {
             // 這個獎項還有剩額，且目前不在抽獎動畫中，自動開下一球
             autoPlayTimerRef.current = setTimeout(() => {
                 handleDraw();
-            }, 2000); // 每次拉霸動畫結束後，停頓 2 秒再抽下一個
+            }, 5000); // 每次動畫結束後，停留 5 秒再抽下一個
         }
 
         return () => {
@@ -136,7 +136,7 @@ export function LotteryBoard() {
                 <span className="text-foreground">剩餘 {remainCount} 名</span>
             </div>
 
-            <div className="my-6 md:my-8 scale-[0.75] md:scale-100 origin-top h-[240px] md:h-auto flex items-center justify-center">
+            <div className="my-2 md:my-4 scale-[0.75] md:scale-100 origin-top h-[240px] md:h-auto flex items-center justify-center">
                 {lotteryEffect === 'slot' ? (
                     <SlotMachine
                         isDrawing={isDrawing}
@@ -179,7 +179,7 @@ export function LotteryBoard() {
                     </Button>
                 )}
 
-                {!isAutoPlaying && remainCount === 0 && (
+                {!isAutoPlaying && !isAutoDrawMode && remainCount === 0 && (
                     <Button
                         size="lg"
                         variant="outline"

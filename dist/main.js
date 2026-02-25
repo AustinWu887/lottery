@@ -42627,16 +42627,19 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
   const { participantsCount, getDrawnNumbers } = useLotteryStore();
   const [phase, setPhase] = (0, import_react35.useState)("idle");
   const [displayNumber, setDisplayNumber] = (0, import_react35.useState)(null);
+  const timersRef = (0, import_react35.useRef)([]);
   (0, import_react35.useEffect)(() => {
+    timersRef.current.forEach((t) => clearTimeout(t));
+    timersRef.current = [];
     if (isDrawing) {
       setPhase("reaching");
       setDisplayNumber(null);
-      setTimeout(() => setPhase("grabbing"), 600);
-      setTimeout(() => {
+      timersRef.current.push(setTimeout(() => setPhase("grabbing"), 600));
+      timersRef.current.push(setTimeout(() => {
         setPhase("pulling");
         finalizeDraw();
-      }, 1800);
-      setTimeout(() => setPhase("revealed"), 2600);
+      }, 1800));
+      timersRef.current.push(setTimeout(() => setPhase("revealed"), 2600));
     } else if (currentWinner !== null) {
       setPhase("revealed");
       setDisplayNumber(currentWinner);
@@ -42644,6 +42647,10 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
       setPhase("idle");
       setDisplayNumber(null);
     }
+    return () => {
+      timersRef.current.forEach((t) => clearTimeout(t));
+      timersRef.current = [];
+    };
   }, [isDrawing]);
   const finalizeDraw = () => {
     const drawnNumbers = getDrawnNumbers();
@@ -42805,11 +42812,11 @@ function LotteryBoard() {
     if (remainCount <= 0 && isAutoPlaying) {
       autoPlayTimerRef.current = setTimeout(() => {
         nextPrize();
-      }, 2500);
+      }, 5e3);
     } else if (isAutoPlaying && !isDrawing) {
       autoPlayTimerRef.current = setTimeout(() => {
         handleDraw();
-      }, 2e3);
+      }, 5e3);
     }
     return () => {
       if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
@@ -42886,7 +42893,7 @@ function LotteryBoard() {
         " \u540D"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "my-6 md:my-8 scale-[0.75] md:scale-100 origin-top h-[240px] md:h-auto flex items-center justify-center", children: lotteryEffect === "slot" ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "my-2 md:my-4 scale-[0.75] md:scale-100 origin-top h-[240px] md:h-auto flex items-center justify-center", children: lotteryEffect === "slot" ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
       SlotMachine,
       {
         isDrawing,
@@ -42925,7 +42932,7 @@ function LotteryBoard() {
           children: isDrawing ? "\u62BD\u734E\u4E2D..." : "\u958B\u59CB\u62BD\u734E"
         }
       ),
-      !isAutoPlaying && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      !isAutoPlaying && !isAutoDrawMode && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
         Button,
         {
           size: "lg",

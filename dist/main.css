@@ -551,6 +551,10 @@ body {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 .-ml-4 {
   margin-left: -1rem;
 }
@@ -3183,6 +3187,10 @@ html > body * {
   .md\:my-8 {
     margin-top: 2rem;
     margin-bottom: 2rem;
+  }
+  .md\:my-4 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
   .md\:mb-6 {
     margin-bottom: 1.5rem;

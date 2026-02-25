@@ -13,19 +13,24 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
     const { participantsCount, getDrawnNumbers } = useLotteryStore();
     const [phase, setPhase] = useState<'idle' | 'reaching' | 'grabbing' | 'pulling' | 'revealed'>('idle');
     const [displayNumber, setDisplayNumber] = useState<number | null>(null);
+    const timersRef = useRef<NodeJS.Timeout[]>([]);
 
     useEffect(() => {
+        // 清除上一輪未完成的計時器
+        timersRef.current.forEach(t => clearTimeout(t));
+        timersRef.current = [];
+
         if (isDrawing) {
             setPhase('reaching');
             setDisplayNumber(null);
 
             // 動畫流程控制
-            setTimeout(() => setPhase('grabbing'), 600);
-            setTimeout(() => {
+            timersRef.current.push(setTimeout(() => setPhase('grabbing'), 600));
+            timersRef.current.push(setTimeout(() => {
                 setPhase('pulling');
                 finalizeDraw();
-            }, 1800); // 延長攪拌時間
-            setTimeout(() => setPhase('revealed'), 2600);
+            }, 1800)); // 延長攪拌時間
+            timersRef.current.push(setTimeout(() => setPhase('revealed'), 2600));
 
         } else if (currentWinner !== null) {
             setPhase('revealed');
@@ -34,6 +39,11 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
             setPhase('idle');
             setDisplayNumber(null);
         }
+
+        return () => {
+            timersRef.current.forEach(t => clearTimeout(t));
+            timersRef.current = [];
+        };
     }, [isDrawing]);
 
     const finalizeDraw = () => {
