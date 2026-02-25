@@ -50,6 +50,14 @@ const modifiedHtml = htmlContent
 fs.writeFileSync('dist/index.html', modifiedHtml);
 fs.writeFileSync('dist/.nojekyll', ''); // Prevent GitHub Pages from ignoring files with underscores
 
+// 複製 public 資料夾內容到 dist
+const publicDir = path.resolve(process.cwd(), 'public');
+if (fs.existsSync(publicDir)) {
+  for (const file of fs.readdirSync(publicDir)) {
+    fs.copyFileSync(path.join(publicDir, file), path.join('dist', file));
+  }
+}
+
 // 建置配置
 const buildOptions = {
   entryPoints: ['src/main.tsx'],

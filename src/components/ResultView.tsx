@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useLotteryStore } from '../store/useLotteryStore';
 import { Button } from './ui/button';
-import { Copy, CheckCircle2, RotateCcw, Trash2 } from 'lucide-react';
+import { Copy, CheckCircle2 } from 'lucide-react';
 
 export function ResultView() {
-    const { prizes, results, resetProgress, resetAll } = useLotteryStore();
+    const { prizes, results } = useLotteryStore();
     const [copied, setCopied] = useState(false);
 
     // 整理結果呈現，順序可以照大獎到小獎顯示
@@ -75,24 +75,6 @@ export function ResultView() {
                 ))}
             </div>
 
-            <div className="flex justify-end gap-4 border-t pt-6">
-                <Button variant="outline" className="gap-2 text-muted-foreground hover:text-foreground" onClick={() => {
-                    if (confirm('確定要清除目前的抽獎進度重新抽籤嗎？(保留設定)')) {
-                        resetProgress();
-                    }
-                }}>
-                    <RotateCcw size={16} />
-                    重新抽獎
-                </Button>
-                <Button variant="ghost" className="gap-2 text-destructive hover:bg-destructive/10" onClick={() => {
-                    if (confirm('警告！這將清除所有設定與結果，確定要繼續嗎？')) {
-                        resetAll();
-                    }
-                }}>
-                    <Trash2 size={16} />
-                    全部重設
-                </Button>
-            </div>
         </div>
     );
 }

@@ -42695,14 +42695,14 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
   const handVariants = {
     idle: { y: -200, opacity: 0 },
     reaching: {
-      y: 80,
+      y: 40,
       x: 0,
       rotate: 0,
       opacity: 1,
       transition: { type: "spring", stiffness: 90, damping: 12 }
     },
     grabbing: {
-      y: [80, 95, 80, 95, 80],
+      y: [40, 52, 40, 52, 40],
       x: [0, -20, 20, -15, 10, 0],
       rotate: [0, -15, 15, -10, 10, 0],
       opacity: 1,
@@ -42731,10 +42731,10 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
     /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { className: "absolute bottom-0 w-[240px] h-[180px] bg-gradient-to-br from-primary to-primary/80 rounded-b-3xl rounded-t-xl shadow-2xl border-4 border-primary/20 z-20 flex items-center justify-center overflow-hidden", children: [
       /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none" }),
       /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute top-0 w-[140px] h-[30px] bg-black/40 rounded-[50%] -translate-y-1/2 blur-[2px]" }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { className: "text-primary-foreground/30 font-black text-6xl rotate-[-10deg] select-none", children: "LOTTERY" })
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("img", { src: "/273570.jpg", alt: "", className: "absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none scale-150" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute bottom-[20px] w-[220px] h-[140px] bg-primary/90 rounded-b-2xl z-0" }),
-    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute inset-0 z-10 pointer-events-none flex items-start justify-center", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(AnimatePresence, { children: (phase === "reaching" || phase === "grabbing" || phase === "pulling" || phase === "revealed") && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { className: "absolute inset-0 z-10 pointer-events-none flex items-start justify-center overflow-hidden", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(AnimatePresence, { children: (phase === "reaching" || phase === "grabbing" || phase === "pulling" || phase === "revealed") && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
       motion.div,
       {
         initial: "idle",
@@ -42869,9 +42869,9 @@ function LotteryBoard() {
   return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex flex-col items-center justify-start p-4 pt-6 md:p-12 bg-card rounded-3xl border shadow-md max-w-2xl mx-auto min-h-[500px] animate-in slide-in-from-bottom-8 duration-500 relative overflow-hidden", children: [
     /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[300px] bg-primary/5 rounded-full blur-3xl -z-10" }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6 text-primary drop-shadow-sm", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Trophy, { className: "text-primary/80 w-7 h-7 md:w-9 md:h-9" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("img", { src: "/274262.jpg", alt: "", className: "w-7 h-7 md:w-9 md:h-9 object-contain" }),
       /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { className: "text-3xl md:text-4xl font-black tracking-widest leading-none", children: currentPrize.name }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Trophy, { className: "text-primary/80 w-7 h-7 md:w-9 md:h-9" })
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("img", { src: "/274262.jpg", alt: "", className: "w-7 h-7 md:w-9 md:h-9 object-contain" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "mb-4 md:mb-8 bg-muted/50 px-4 py-1.5 md:px-6 md:py-2 rounded-full border border-border/50 text-muted-foreground font-semibold flex items-center gap-2 text-sm md:text-base", children: [
       /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { children: [
@@ -42910,9 +42910,9 @@ function LotteryBoard() {
           className: "text-lg md:text-2xl h-14 md:h-16 px-6 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all w-full max-w-[280px]",
           onClick: toggleAutoPlay,
           disabled: remainCount === 0 && !isAutoPlaying,
-          children: isAutoPlaying ? "\u505C\u6B62\u81EA\u52D5\u62BD\u734E" : /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
+          children: isAutoPlaying ? "Stop" : /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
             /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(CirclePlay, { className: "mr-2 h-5 w-5 md:h-6 md:w-6" }),
-            "\u81EA\u52D5\u9023\u7E8C\u62BD\u734E"
+            "Ready! Set! GO!"
           ] })
         }
       ) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
@@ -42955,7 +42955,7 @@ function LotteryBoard() {
 var import_react38 = __toESM(require_react());
 var import_jsx_runtime27 = __toESM(require_jsx_runtime());
 function ResultView() {
-  const { prizes, results, resetProgress, resetAll } = useLotteryStore();
+  const { prizes, results } = useLotteryStore();
   const [copied, setCopied] = (0, import_react38.useState)(false);
   const resultsList = prizes.map((prize) => ({
     ...prize,
@@ -43002,25 +43002,7 @@ function ResultView() {
         ] })
       ] }),
       item.winners.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { className: "grid grid-cols-5 md:grid-cols-10 gap-2 md:gap-3 justify-center max-w-full", children: item.winners.map((num, i) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { className: "bg-background text-foreground border-2 border-primary/30 rounded-xl md:rounded-2xl font-black text-lg md:text-xl shadow-sm aspect-square flex items-center justify-center leading-none", children: num }, i)) }) : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { className: "text-muted-foreground italic text-sm", children: "\u5C1A\u672A\u62BD\u51FA" })
-    ] }, item.id)) }),
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { className: "flex justify-end gap-4 border-t pt-6", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(Button, { variant: "outline", className: "gap-2 text-muted-foreground hover:text-foreground", onClick: () => {
-        if (confirm("\u78BA\u5B9A\u8981\u6E05\u9664\u76EE\u524D\u7684\u62BD\u734E\u9032\u5EA6\u91CD\u65B0\u62BD\u7C64\u55CE\uFF1F(\u4FDD\u7559\u8A2D\u5B9A)")) {
-          resetProgress();
-        }
-      }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(RotateCcw, { size: 16 }),
-        "\u91CD\u65B0\u62BD\u734E"
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(Button, { variant: "ghost", className: "gap-2 text-destructive hover:bg-destructive/10", onClick: () => {
-        if (confirm("\u8B66\u544A\uFF01\u9019\u5C07\u6E05\u9664\u6240\u6709\u8A2D\u5B9A\u8207\u7D50\u679C\uFF0C\u78BA\u5B9A\u8981\u7E7C\u7E8C\u55CE\uFF1F")) {
-          resetAll();
-        }
-      }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(Trash2, { size: 16 }),
-        "\u5168\u90E8\u91CD\u8A2D"
-      ] })
-    ] })
+    ] }, item.id)) })
   ] });
 }
 
@@ -43028,6 +43010,7 @@ function ResultView() {
 var import_jsx_runtime28 = __toESM(require_jsx_runtime());
 function App() {
   const [activeTab, setActiveTab] = (0, import_react39.useState)("settings");
+  const { resetProgress, resetAll } = useLotteryStore();
   return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "min-h-screen bg-background text-foreground flex flex-col font-sans", children: [
     /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("header", { className: "bg-card border-b sticky top-0 z-10 shadow-sm", children: /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "max-w-5xl mx-auto px-4 h-16 flex items-center justify-between", children: [
       /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "flex items-center gap-2 cursor-pointer", onClick: () => setActiveTab("settings"), children: [
@@ -43065,6 +43048,34 @@ function App() {
             children: [
               /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(ClipboardList, { size: 18 }),
               /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { className: "hidden sm:inline", children: "\u62BD\u734E\u7D50\u679C" })
+            ]
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { className: "flex items-center gap-1", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
+          "button",
+          {
+            onClick: () => {
+              if (confirm("\u78BA\u5B9A\u8981\u6E05\u9664\u76EE\u524D\u7684\u62BD\u734E\u9032\u5EA6\u91CD\u65B0\u62BD\u7C64\u55CE\uFF1F(\u4FDD\u7559\u8A2D\u5B9A)")) resetProgress();
+            },
+            className: "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all",
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(RotateCcw, { size: 16 }),
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { className: "hidden sm:inline", children: "\u91CD\u65B0\u62BD\u734E" })
+            ]
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
+          "button",
+          {
+            onClick: () => {
+              if (confirm("\u8B66\u544A\uFF01\u9019\u5C07\u6E05\u9664\u6240\u6709\u8A2D\u5B9A\u8207\u7D50\u679C\uFF0C\u78BA\u5B9A\u8981\u7E7C\u7E8C\u55CE\uFF1F")) resetAll();
+            },
+            className: "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-all",
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(Trash2, { size: 16 }),
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { className: "hidden sm:inline", children: "\u5168\u90E8\u91CD\u8A2D" })
             ]
           }
         )

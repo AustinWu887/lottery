@@ -102,11 +102,11 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
     const handVariants: any = {
         idle: { y: -200, opacity: 0 },
         reaching: {
-            y: 80, x: 0, rotate: 0, opacity: 1,
+            y: 40, x: 0, rotate: 0, opacity: 1,
             transition: { type: "spring", stiffness: 90, damping: 12 } as any
         },
         grabbing: {
-            y: [80, 95, 80, 95, 80],
+            y: [40, 52, 40, 52, 40],
             x: [0, -20, 20, -15, 10, 0],
             rotate: [0, -15, 15, -10, 10, 0],
             opacity: 1,
@@ -133,14 +133,14 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none" />
                 {/* 箱子開口 (視覺暗示) */}
                 <div className="absolute top-0 w-[140px] h-[30px] bg-black/40 rounded-[50%] -translate-y-1/2 blur-[2px]" />
-                <span className="text-primary-foreground/30 font-black text-6xl rotate-[-10deg] select-none">LOTTERY</span>
+                <img src="/273570.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none scale-150" />
             </div>
 
             {/* 箱子的後壁 (創造手伸進去的深度感) */}
             <div className="absolute bottom-[20px] w-[220px] h-[140px] bg-primary/90 rounded-b-2xl z-0" />
 
             {/* 動畫手部與球 */}
-            <div className="absolute inset-0 z-10 pointer-events-none flex items-start justify-center">
+            <div className="absolute inset-0 z-10 pointer-events-none flex items-start justify-center overflow-hidden">
                 <AnimatePresence>
                     {(phase === 'reaching' || phase === 'grabbing' || phase === 'pulling' || phase === 'revealed') && (
                         <motion.div

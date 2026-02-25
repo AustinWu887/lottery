@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { SettingsPanel } from './components/SettingsPanel';
 import { LotteryBoard } from './components/LotteryBoard';
 import { ResultView } from './components/ResultView';
-import { Settings, Play, ClipboardList } from 'lucide-react';
+import { Settings, Play, ClipboardList, RotateCcw, Trash2 } from 'lucide-react';
+import { useLotteryStore } from './store/useLotteryStore';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'settings' | 'lottery' | 'results'>('settings');
+  const { resetProgress, resetAll } = useLotteryStore();
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
@@ -39,6 +41,23 @@ export default function App() {
             >
               <ClipboardList size={18} />
               <span className="hidden sm:inline">抽獎結果</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => { if (confirm('確定要清除目前的抽獎進度重新抽籤嗎？(保留設定)')) resetProgress(); }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+            >
+              <RotateCcw size={16} />
+              <span className="hidden sm:inline">重新抽獎</span>
+            </button>
+            <button
+              onClick={() => { if (confirm('警告！這將清除所有設定與結果，確定要繼續嗎？')) resetAll(); }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-all"
+            >
+              <Trash2 size={16} />
+              <span className="hidden sm:inline">全部重設</span>
             </button>
           </div>
         </div>
