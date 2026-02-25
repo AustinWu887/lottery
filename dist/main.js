@@ -2441,7 +2441,7 @@ var require_react_dom_development = __commonJS({
         var HostPortal = 4;
         var HostComponent = 5;
         var HostText = 6;
-        var Fragment8 = 7;
+        var Fragment7 = 7;
         var Mode = 8;
         var ContextConsumer = 9;
         var ContextProvider = 10;
@@ -3598,7 +3598,7 @@ var require_react_dom_development = __commonJS({
               return "DehydratedFragment";
             case ForwardRef:
               return getWrappedName$1(type, type.render, "ForwardRef");
-            case Fragment8:
+            case Fragment7:
               return "Fragment";
             case HostComponent:
               return type;
@@ -12027,7 +12027,7 @@ var require_react_dom_development = __commonJS({
             }
           }
           function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-            if (current2 === null || current2.tag !== Fragment8) {
+            if (current2 === null || current2.tag !== Fragment7) {
               var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
               created.return = returnFiber;
               return created;
@@ -12430,7 +12430,7 @@ var require_react_dom_development = __commonJS({
               if (child.key === key) {
                 var elementType = element.type;
                 if (elementType === REACT_FRAGMENT_TYPE) {
-                  if (child.tag === Fragment8) {
+                  if (child.tag === Fragment7) {
                     deleteRemainingChildren(returnFiber, child.sibling);
                     var existing = useFiber(child, element.props.children);
                     existing.return = returnFiber;
@@ -17906,7 +17906,7 @@ var require_react_dom_development = __commonJS({
               var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
               return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
             }
-            case Fragment8:
+            case Fragment7:
               return updateFragment(current2, workInProgress2, renderLanes2);
             case Mode:
               return updateMode(current2, workInProgress2, renderLanes2);
@@ -18178,7 +18178,7 @@ var require_react_dom_development = __commonJS({
             case SimpleMemoComponent:
             case FunctionComponent:
             case ForwardRef:
-            case Fragment8:
+            case Fragment7:
             case Mode:
             case Profiler:
             case ContextConsumer:
@@ -22439,7 +22439,7 @@ var require_react_dom_development = __commonJS({
           return fiber;
         }
         function createFiberFromFragment(elements, mode, lanes, key) {
-          var fiber = createFiber(Fragment8, elements, key, mode);
+          var fiber = createFiber(Fragment7, elements, key, mode);
           fiber.lanes = lanes;
           return fiber;
         }
@@ -42827,11 +42827,11 @@ function LotteryBoard() {
     if (remainCount <= 0 && (isAutoPlaying || isLastPrize)) {
       autoPlayTimerRef.current = setTimeout(() => {
         nextPrize();
-      }, 5e3);
+      }, 1e4);
     } else if (isAutoPlaying && !isDrawing) {
       autoPlayTimerRef.current = setTimeout(() => {
         handleDraw();
-      }, 5e3);
+      }, 1e4);
     }
     return () => {
       if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
@@ -42924,18 +42924,17 @@ function LotteryBoard() {
       }
     ) }),
     /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
         Button,
         {
           size: "lg",
-          variant: isAutoPlaying ? "destructive" : "default",
           className: "text-lg md:text-2xl h-14 md:h-16 px-6 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all w-full max-w-[280px]",
           onClick: toggleAutoPlay,
-          disabled: remainCount === 0 && !isAutoPlaying,
-          children: isAutoPlaying ? "Stop" : /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
+          disabled: isAutoPlaying || remainCount === 0,
+          children: [
             /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(CirclePlay, { className: "mr-2 h-5 w-5 md:h-6 md:w-6" }),
             "Ready! Set! GO!"
-          ] })
+          ]
         }
       ),
       !isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(

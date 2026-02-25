@@ -55,12 +55,12 @@ export function LotteryBoard() {
             // 這個獎項抽完了，自動進入下一個獎項（或抽完畫面）
             autoPlayTimerRef.current = setTimeout(() => {
                 nextPrize();
-            }, 5000); // UI 緩衝 5 秒切換獎項
+            }, 10000); // UI 緩衝 5 秒切換獎項
         } else if (isAutoPlaying && !isDrawing) {
             // 這個獎項還有剩額，且目前不在抽獎動畫中，自動開下一球
             autoPlayTimerRef.current = setTimeout(() => {
                 handleDraw();
-            }, 5000); // 每次動畫結束後，停留 5 秒再抽下一個
+            }, 10000); // 每次動畫結束後，停留 5 秒再抽下一個
         }
 
         return () => {
@@ -170,17 +170,12 @@ export function LotteryBoard() {
             <div className="flex gap-3 md:gap-4 mt-2 md:mt-6 z-10 relative pl-2 pr-2">
                 <Button
                     size="lg"
-                    variant={isAutoPlaying ? "destructive" : "default"}
                     className="text-lg md:text-2xl h-14 md:h-16 px-6 md:px-12 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all w-full max-w-[280px]"
                     onClick={toggleAutoPlay}
-                    disabled={remainCount === 0 && !isAutoPlaying}
+                    disabled={isAutoPlaying || remainCount === 0}
                 >
-                    {isAutoPlaying ? 'Stop' : (
-                        <>
-                            <PlayCircle className="mr-2 h-5 w-5 md:h-6 md:w-6" />
-                            Ready! Set! GO!
-                        </>
-                    )}
+                    <PlayCircle className="mr-2 h-5 w-5 md:h-6 md:w-6" />
+                    Ready! Set! GO!
                 </Button>
 
                 {!isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && (
