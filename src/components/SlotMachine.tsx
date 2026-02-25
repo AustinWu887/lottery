@@ -45,8 +45,10 @@ export function SlotMachine({ isDrawing, currentWinner, onDrawComplete }: SlotMa
             };
         } else if (currentWinner !== null) {
             setDisplayNumber(currentWinner);
+        } else {
+            setDisplayNumber(0);
         }
-    }, [isDrawing]);
+    }, [isDrawing, currentWinner]);
 
     const finalizeDraw = () => {
         const drawnNumbers = getDrawnNumbers();

@@ -44,7 +44,7 @@ export function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }
             timersRef.current.forEach(t => clearTimeout(t));
             timersRef.current = [];
         };
-    }, [isDrawing]);
+    }, [isDrawing, currentWinner]);
 
     const finalizeDraw = () => {
         const drawnNumbers = getDrawnNumbers();

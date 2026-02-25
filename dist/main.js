@@ -34521,8 +34521,10 @@ function SlotMachine({ isDrawing, currentWinner, onDrawComplete }) {
       };
     } else if (currentWinner !== null) {
       setDisplayNumber(currentWinner);
+    } else {
+      setDisplayNumber(0);
     }
-  }, [isDrawing]);
+  }, [isDrawing, currentWinner]);
   const finalizeDraw = () => {
     const drawnNumbers = getDrawnNumbers();
     const availableNumbers = [];
@@ -42651,7 +42653,7 @@ function BoxLotteryAnimation({ isDrawing, currentWinner, onDrawComplete }) {
       timersRef.current.forEach((t) => clearTimeout(t));
       timersRef.current = [];
     };
-  }, [isDrawing]);
+  }, [isDrawing, currentWinner]);
   const finalizeDraw = () => {
     const drawnNumbers = getDrawnNumbers();
     const availableNumbers = [];
