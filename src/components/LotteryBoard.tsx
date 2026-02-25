@@ -18,6 +18,21 @@ export function LotteryBoard() {
     const currentPrize = prizes[targetPrizeIndex];
     const drawnForThisPrize = currentPrize ? results[currentPrize.id] || [] : [];
     const remainCount = currentPrize ? currentPrize.count - drawnForThisPrize.length : 0;
+    const isLastPrize = currentPrizeIndex === prizes.length - 1;
+
+    // 重新抽籤時清除上一個號碼
+    useEffect(() => {
+        const hasResults = Object.values(results).some(arr => arr.length > 0);
+        if (!hasResults) {
+            setCurrentWinner(null);
+            setIsDrawing(false);
+            setIsAutoPlaying(false);
+            if (autoPlayTimerRef.current) {
+                clearTimeout(autoPlayTimerRef.current);
+                autoPlayTimerRef.current = undefined;
+            }
+        }
+    }, [results, currentPrizeIndex]);
 
     const handleDraw = useCallback(() => {
         if (remainCount <= 0 || isDrawing || !currentPrize) return;
@@ -36,8 +51,8 @@ export function LotteryBoard() {
     useEffect(() => {
         if (!currentPrize) return;
 
-        if (remainCount <= 0 && isAutoPlaying) {
-            // 這個獎項抽完了，自動進入下一個獎項
+        if (remainCount <= 0 && (isAutoPlaying || isLastPrize)) {
+            // 這個獎項抽完了，自動進入下一個獎項（或抽完畫面）
             autoPlayTimerRef.current = setTimeout(() => {
                 nextPrize();
             }, 5000); // UI 緩衝 5 秒切換獎項
@@ -179,7 +194,7 @@ export function LotteryBoard() {
                     </Button>
                 )}
 
-                {!isAutoPlaying && !isAutoDrawMode && remainCount === 0 && (
+                {!isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && (
                     <Button
                         size="lg"
                         variant="outline"

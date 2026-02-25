@@ -42796,6 +42796,19 @@ function LotteryBoard() {
   const currentPrize = prizes[targetPrizeIndex];
   const drawnForThisPrize = currentPrize ? results[currentPrize.id] || [] : [];
   const remainCount = currentPrize ? currentPrize.count - drawnForThisPrize.length : 0;
+  const isLastPrize = currentPrizeIndex === prizes.length - 1;
+  (0, import_react37.useEffect)(() => {
+    const hasResults = Object.values(results).some((arr) => arr.length > 0);
+    if (!hasResults) {
+      setCurrentWinner(null);
+      setIsDrawing(false);
+      setIsAutoPlaying(false);
+      if (autoPlayTimerRef.current) {
+        clearTimeout(autoPlayTimerRef.current);
+        autoPlayTimerRef.current = void 0;
+      }
+    }
+  }, [results, currentPrizeIndex]);
   const handleDraw = (0, import_react37.useCallback)(() => {
     if (remainCount <= 0 || isDrawing || !currentPrize) return;
     setIsDrawing(true);
@@ -42809,7 +42822,7 @@ function LotteryBoard() {
   };
   (0, import_react37.useEffect)(() => {
     if (!currentPrize) return;
-    if (remainCount <= 0 && isAutoPlaying) {
+    if (remainCount <= 0 && (isAutoPlaying || isLastPrize)) {
       autoPlayTimerRef.current = setTimeout(() => {
         nextPrize();
       }, 5e3);
@@ -42932,7 +42945,7 @@ function LotteryBoard() {
           children: isDrawing ? "\u62BD\u734E\u4E2D..." : "\u958B\u59CB\u62BD\u734E"
         }
       ),
-      !isAutoPlaying && !isAutoDrawMode && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      !isAutoPlaying && !isAutoDrawMode && !isLastPrize && remainCount === 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
         Button,
         {
           size: "lg",
